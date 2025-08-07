@@ -27,8 +27,8 @@ lib/
 │   ├── models/            # Freezed data models with JSON serialization
 │   └── repository/        # Repository pattern for data access
 └── presentation/
-    ├── cubit/             # BLoC/Cubit for state management
-    └── screens/           # UI screens and widgets
+  ├── cubit/             # BLoC/Cubit for state management
+  └── screens/           # UI screens and widgets
 ```
 
 ### Tech Stack
@@ -130,11 +130,11 @@ The application integrates with two primary APIs:
 @freezed
 class BondSummary with _$BondSummary {
   const factory BondSummary({
-    required String logo,
-    required String isin,
-    required String rating,
-    @JsonKey(name: 'company_name') required String companyName,
-    required List<String> tags,
+  required String logo,
+  required String isin,
+  required String rating,
+  @JsonKey(name: 'company_name') required String companyName,
+  required List<String> tags,
   }) = _BondSummary;
 }
 ```
@@ -144,14 +144,14 @@ class BondSummary with _$BondSummary {
 @freezed
 class BondDetail with _$BondDetail {
   const factory BondDetail({
-    required String logo,
-    @JsonKey(name: 'company_name') required String companyName,
-    required String description,
-    required String isin,
-    required String status,
-    @JsonKey(name: 'pros_and_cons') required ProsAndCons prosAndCons,
-    required Financials financials,
-    @JsonKey(name: 'issuer_details') required IssuerDetails issuerDetails,
+  required String logo,
+  @JsonKey(name: 'company_name') required String companyName,
+  required String description,
+  required String isin,
+  required String status,
+  @JsonKey(name: 'pros_and_cons') required ProsAndCons prosAndCons,
+  required Financials financials,
+  @JsonKey(name: 'issuer_details') required IssuerDetails issuerDetails,
   }) = _BondDetail;
 }
 ```
@@ -274,15 +274,55 @@ tap_invest/
 - `json_serializable: ^6.7.1` - JSON serialization
 - `injectable_generator: ^2.4.1` - DI code generation
 
-## 🧪 Testing
 
+### 📊 Test Coverage
+- **Data Models**: 100% coverage with JSON serialization, equality, and edge cases
+- **Repository Layer**: Complete API interaction testing with mocked HTTP client
+- **Presentation Layer**: Full cubit testing with state management and business logic
+
+### 🏗️ Test Architecture
+```
+test/
+├── data/
+│   ├── models/
+│   │   ├── bond_detail_model_test.dart
+│   │   └── bond_summary_model_test.dart
+│   └── repository/
+│       ├── bond_repository_test.dart
+│       └── bond_repository_test.mocks.dart
+└── presentation/
+    └── cubit/
+        ├── bond_detail_cubit_test.dart
+        ├── bond_detail_cubit_test.mocks.dart
+        ├── bond_list_cubit_test.dart
+        └── bond_list_cubit_test.mocks.dart
+```
+
+### 🔧 Testing Tools
+- **flutter_test**: Core Flutter testing framework
+- **bloc_test**: BLoC/Cubit state management testing
+- **mockito**: Mock generation for dependencies
+
+### 🚀 Running Tests
 ```bash
 # Run all tests
 flutter test
 
-# Run tests with coverage
+# Run with coverage
 flutter test --coverage
 
-# Integration tests
-flutter drive --target=test_driver/app.dart
+# Generate mocks first
+flutter packages pub run build_runner build
+
+# Run specific test files
+flutter test test/data/models/
+flutter test test/presentation/cubit/
 ```
+
+### 📋 What's Tested
+- ✅ JSON serialization/deserialization
+- ✅ API error handling (network, 404, timeouts)
+- ✅ Search functionality (name, ISIN, tags)
+- ✅ State transitions and error states
+- ✅ Chart type toggling
+- ✅ Edge cases and null handling
